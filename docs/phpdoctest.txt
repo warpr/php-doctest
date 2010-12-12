@@ -1,0 +1,50 @@
+
+bin/phpdoctest
+==============
+
+bin/phpdoctest is a little test runner I've added to Greg Thornton's
+DocTest for PHP.
+
+It doesn't support any commandline arguments, other than the files you
+want to test.  Before running a doctest, the runner will chdir() to
+the directory where the test resides, so your tests can refer to files
+relative to that location.
+
+Example:
+--------
+
+    user@host:~$ bin/phpdoctest docs/phpdoctest.txt
+    1 items passed all tests:
+       6 tests in phpdoctest.txt
+    6 tests in 1 items.
+    6 passed and 0 failed.
+    Test passed.
+
+
+Tests:
+------
+
+The following tests test running phpdoctest against the examples
+included in the examples tree.  For these to work you will need to
+have 'php' available in your PATH.
+
+
+.. sourcecode:: php
+
+   php > $cmd = "php ../bin/phpdoctest ../examples/subdir/tests.txt"; 
+   php > $output = exec ($cmd);
+   php > echo "$output\n";
+   Test passed.
+
+   php > $cmd = "php ../bin/phpdoctest ../examples/tests.txt"; 
+   php > $output = exec ($cmd);
+   php > echo "$output\n";
+   ***Test Failed*** 2 failures.
+
+
+License:
+--------
+
+Copyright 2010  Kuno Woudt <kuno@frob.nl>
+License: Unknown ( FIXME! )
+

@@ -1,5 +1,10 @@
 #!/usr/bin/env php
-<?php /*  -*- mode: php -*- */
+<?php /*  -*- mode: php -*-
+
+  Copyright 2010  Kuno Woudt <kuno@frob.nl>
+  License: Unknown ( FIXME! )
+
+*/
 
 error_reporting (E_ALL);
 
@@ -8,7 +13,7 @@ require (dirname (__FILE__)."/../src/DocTest/import.php");
 function is_testfile ($filename)
 {
     $parser = new DocTest_Parser ();
-        
+
     $text = file_get_contents($filename);
 
     $name = basename($filename);
@@ -22,10 +27,10 @@ function is_testfile ($filename)
 function run_testfile ($test)
 {
     $verbose = false;
-    $optionflags = 0;
+    $optionflags = DOCTEST_NORMALIZE_WHITESPACE | DOCTEST_ELLIPSIS;
 
     $runner = new DocTest_Runner(null, $verbose, $optionflags);
-    
+
     $runner->run($test);
     $runner->summarize(true);
 
@@ -38,6 +43,7 @@ function process_testfile ($filename)
     if (empty ($test))
         return 0;
 
+    chdir (dirname (realpath ($filename)));
     return run_testfile ($test);
 }
 
