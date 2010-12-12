@@ -14,7 +14,12 @@ function is_testfile ($filename)
 {
     $parser = new DocTest_Parser ();
 
-    $text = file_get_contents($filename);
+    $text = @file_get_contents($filename);
+    if (empty ($text))
+    {
+        echo "WARNING: Cannot open $filename\n\n";
+        return null;
+    }
 
     $name = basename($filename);
 
@@ -47,9 +52,46 @@ function process_testfile ($filename)
     return run_testfile ($test);
 }
 
+function help ()
+{
+    echo "phpdoctest\n" .
+        "Copyright 2010  Greg Thornton\n" .
+        "Copyright 2010  Kuno Woudt\n" .
+        "\n" .
+        "Usage: phpdoctest [FILES]\n" .
+        "\n";
+
+    exit (-1);
+}
+
+function check_help (&$args)
+{
+    if (empty ($args))
+    {
+        help ();
+    }
+
+    foreach ($args as $key => $arg)
+    {
+        /* stop looking for options. */
+        if ($arg == "--")
+        {
+            unset ($args[$key]);
+            break;
+        }
+
+        if ($arg == "--help" or $arg == "-h")
+        {
+            help ();
+        }
+    }
+}
+
 function main ($files)
 {
     array_shift ($files);
+
+    check_help ($files);
 
     $success = 0;
     foreach ($files as $file)
